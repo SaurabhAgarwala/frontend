@@ -20,7 +20,7 @@
 			    font-weight: 400;
 			}
 
-            li, #code-status{
+            li, #status{
 			    font-family: 'Arvo', serif;
 			    font-size: 15px;
 			    font-weight: 400;
@@ -60,7 +60,9 @@
                 <div id="container" style="width:80%;height:300px;border:1px solid grey; margin-right: auto;"></div>
                 <br>
                 <input type="submit" onclick="contents()" id="submit-code" class="btn btn-primary" value="Submit Code" style="width: 20%; margin-right:auto;">
-                <div id="status" class="code-status">
+                <br>
+                <br>
+                <div id="status">
                 </div>
             </div>
             <div class="col-md-4">
@@ -68,7 +70,6 @@
                 <ol class="question-text" id="other-questions">
                     <!-- <a onclick="getQuestion('c8a3de99-4a18-4a46-93a2-654ad6926176');" href="javascript:void(0);"><li>How are you?</li></a> -->
                 </ol>
-
             </div>
         </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -95,10 +96,11 @@
                     language: lang   
                 });
             }); 
+            var qid;
             function contents(){
                 model = editor.getModel();
                 var submission = {
-                    question_id: 'c8a3de99-4a18-4a46-93a2-654ad6926176', 
+                    question_id: qid, 
                     user_id: 'a934e6c7-c658-4cc8-bd43-c5a6de2b8294',
                     language: lang,
                     submission_file: model.getValue()
@@ -110,7 +112,7 @@
                     dataType: 'json',
                     contentType: 'application/json',
                     success: function (result) {
-                        document.getElementById('status').innerHTML = "Your submission returned:  " +  result.code_status;
+                        document.getElementById('status').innerHTML = "Your submission returned: " +  result.code_status;
                     },
                     data: JSON.stringify(submission)
                 });
@@ -119,6 +121,7 @@
                 $.getJSON("http://localhost:3000/questions/" + qsn_id, function(data){
                     console.log("called");
                     document.getElementById('question-text').innerHTML = 'Problem Statement:' + data.question;
+                    qid=qsn_id;
                 });
             }
             function getQuestions(){//localhost:3000/question/1ed7ff56-a849-462d-a571-7f0dbfe32633
